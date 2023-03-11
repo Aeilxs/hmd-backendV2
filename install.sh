@@ -3,9 +3,9 @@
 install()
 {
 composer install
-symfony console make:migration
 symfony console doctrine:database:create
-symfony console doctrine:schema:create
+symfony console doctrine:migrations:migrate
+symfony console lexik:jwt:generate-keypair
 }
 
 install
