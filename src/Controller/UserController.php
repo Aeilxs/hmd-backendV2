@@ -39,16 +39,17 @@ class UserController extends AbstractController
         $user = $this->serializer->deserialize($request->getContent(), User::class, 'json');
         $user->setRoles(['ROLE_USER']);
 
+        $errors = $this->validator->validate($user);
+
         $user->setPassword(
             $this->passwordHasher->hashPassword($user, $user->getPassword())
         );
 
-        $errors = $this->validator->validate($user);
-
         if (count($errors) > 0) {
-            return $this->json(['errors' => $errors], Response::HTTP_BAD_REQUEST);
+            return $this->json([
+                'errors' => $errors
+            ], Response::HTTP_BAD_REQUEST);
         }
-
 
         $this->userRepository->save($user, true);
         return $this->json([
@@ -57,6 +58,6 @@ class UserController extends AbstractController
                 'severity' => 'info',
                 'message' => 'Votre compte a été créer avec succès'
             ],
-        ]);
+        ], Response::HTTP_CREATED);
     }
 }

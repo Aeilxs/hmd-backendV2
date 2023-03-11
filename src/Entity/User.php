@@ -22,6 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
@@ -77,11 +78,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->setCreatedAt(new DateTimeImmutable());
+        $this->activities = new ArrayCollection();
+        $this->drugs = new ArrayCollection();
+        $this->foods = new ArrayCollection();
         $this->hydrations = new ArrayCollection();
         $this->sleeps = new ArrayCollection();
-        $this->activities = new ArrayCollection();
-        $this->foods = new ArrayCollection();
-        $this->drugs = new ArrayCollection();
     }
 
     public function getId(): ?int
