@@ -53,7 +53,7 @@ class User
     private ?\DateTimeInterface $date_of_birth = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $update_at = null;
+    private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
@@ -195,14 +195,14 @@ class User
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->update_at;
+        return $this->updated_at;
     }
 
-    public function setUpdateAt(?\DateTimeImmutable $update_at): self
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
-        $this->update_at = $update_at;
+        $this->updated_at = $updated_at;
 
         return $this;
     }
