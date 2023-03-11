@@ -50,14 +50,24 @@ class UserController extends AbstractController
                 'errors' => $errors
             ], Response::HTTP_BAD_REQUEST);
         }
-
         $this->userRepository->save($user, true);
         return $this->json([
-            'user' => $user,
             'message' => [
                 'severity' => 'info',
-                'message' => 'Votre compte a été créer avec succès'
-            ],
-        ], Response::HTTP_CREATED);
+                'message' => 'Votre compte a été créé avec succès'
+            ]
+        ], Response::HTTP_CREATED, [], ['groups' => ['user']]);
+    }
+
+    #[Route('/{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function show(User $user): JsonResponse
+    {
+        return $this->json([
+            'data' => $user,
+            'message' => [
+                'severity' => 'info',
+                'message' => 'Les données de l\'utilisateur ont été récupérées avec succès'
+            ]
+        ], Response::HTTP_OK, [], ['groups' => ['user']]);
     }
 }
