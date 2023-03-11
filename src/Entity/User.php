@@ -60,19 +60,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Hydration::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Hydration::class, orphanRemoval: true)]
     private Collection $hydrations;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Sleep::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sleep::class, orphanRemoval: true)]
     private Collection $sleeps;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Activity::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Activity::class, orphanRemoval: true)]
     private Collection $activities;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Food::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Food::class, orphanRemoval: true)]
     private Collection $foods;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Drug::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Drug::class, orphanRemoval: true)]
     private Collection $drugs;
 
     public function __construct()
