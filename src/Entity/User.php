@@ -3,29 +3,31 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    const ROLES = ['ROLE_USER', 'ROLE_ADMIN'];
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
     private ?string $email = null;
 
-    #[ORM\Column(length: 10)]
-    #[Assert\Choice(choices: User::ROLES, message: 'Rôle invalide')]
-    private ?string $roles = null;
+    #[ORM\Column(length: 50)]
+    #[Assert\Choice(choices: ['ROLE_USER', 'ROLE_ADMIN'], multiple: true, message: 'Rôle invalide')]
+    private array $roles = [];
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
@@ -53,38 +55,66 @@ class User
     private ?\DateTimeInterface $date_of_birth = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $update_at = null;
+    private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Hydration::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Hydration::class, orphanRemoval: true)]
     private Collection $hydrations;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Sleep::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sleep::class, orphanRemoval: true)]
     private Collection $sleeps;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Activity::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Activity::class, orphanRemoval: true)]
     private Collection $activities;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Food::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Food::class, orphanRemoval: true)]
     private Collection $foods;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Drug::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Drug::class, orphanRemoval: true)]
     private Collection $drugs;
 
     public function __construct()
     {
+        $this->setCreatedAt(new DateTimeImmutable());
+        $this->activities = new ArrayCollection();
+        $this->drugs = new ArrayCollection();
+        $this->foods = new ArrayCollection();
         $this->hydrations = new ArrayCollection();
         $this->sleeps = new ArrayCollection();
-        $this->activities = new ArrayCollection();
-        $this->foods = new ArrayCollection();
-        $this->drugs = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+        // Do nothing
+    }
+
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -95,18 +125,6 @@ class User
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getRoles(): ?string
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(string $roles): self
-    {
-        $this->roles = $roles;
 
         return $this;
     }
@@ -195,14 +213,14 @@ class User
         return $this;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->update_at;
+        return $this->updated_at;
     }
 
-    public function setUpdateAt(?\DateTimeImmutable $update_at): self
+    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
     {
-        $this->update_at = $update_at;
+        $this->updated_at = $updated_at;
 
         return $this;
     }
