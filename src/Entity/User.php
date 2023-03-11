@@ -75,6 +75,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Drug::class, orphanRemoval: true)]
     private Collection $drugs;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Smoke::class, orphanRemoval: true)]
+    private Collection $smokes;
+
     public function __construct()
     {
         $this->setCreatedAt(new DateTimeImmutable());
@@ -83,6 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->foods = new ArrayCollection();
         $this->hydrations = new ArrayCollection();
         $this->sleeps = new ArrayCollection();
+        $this->smokes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -393,6 +397,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($drug->getUserId() === $this) {
                 $drug->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Smoke>
+     */
+    public function getSmokes(): Collection
+    {
+        return $this->smokes;
+    }
+
+    public function addSmoke(Smoke $smoke): self
+    {
+        if (!$this->smokes->contains($smoke)) {
+            $this->smokes->add($smoke);
+            $smoke->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSmoke(Smoke $smoke): self
+    {
+        if ($this->smokes->removeElement($smoke)) {
+            // set the owning side to null (unless already changed)
+            if ($smoke->getUser() === $this) {
+                $smoke->setUser(null);
             }
         }
 
