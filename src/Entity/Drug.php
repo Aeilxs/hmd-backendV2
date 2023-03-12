@@ -6,6 +6,7 @@ use App\Repository\DrugRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: DrugRepository::class)]
 class Drug
@@ -13,6 +14,7 @@ class Drug
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['drug'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'drugs')]
@@ -20,15 +22,19 @@ class Drug
     private ?User $user = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['drug'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['drug'])]
     private ?string $unit = null;
 
     #[ORM\Column]
+    #[Groups(['drug'])]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['drug'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
