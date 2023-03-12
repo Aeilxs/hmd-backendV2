@@ -8,21 +8,24 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+// #[UniqueEntity('email', message: "L'email est déjà utiliser. Avez-vous oublier votre mot de passe ?")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ORM\GeneratedValue]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
+    #[Assert\NotBlank(message: 'Vous devez renseigner votre email')]
+    #[Assert\Email(message: "L'adresse email \"{{ value }}\" est invalide")]
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
@@ -30,16 +33,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
+    // #[Assert\Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/')]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Vous devez renseigner votre prénom')]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Vous devez renseigner votre nom')]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 5)]
     #[Assert\Choice(choices: ['homme', 'femme'], message: 'Genre invalide')]
+    #[Assert\NotBlank(message: 'Vous devez choisir un genre')]
     private ?string $gender = null;
 
     #[ORM\Column(nullable: true)]
