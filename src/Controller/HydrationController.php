@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+#[Route('/api/users/hydrations', name: 'app_user_hydrations')]
 class HydrationController extends AbstractController
 {
     private SerializerInterface $serializer;
