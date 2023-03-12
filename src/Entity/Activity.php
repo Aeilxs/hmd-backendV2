@@ -6,6 +6,7 @@ use App\Repository\ActivityRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
@@ -13,6 +14,7 @@ class Activity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['activity'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'activities')]
@@ -20,15 +22,19 @@ class Activity
     private ?User $user = null;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['activity'])]
     private ?string $type = null;
 
     #[ORM\Column]
+    #[Groups(['activity'])]
     private ?int $duration = null;
 
     #[ORM\Column]
+    #[Groups(['activity'])]
     private ?int $intensity = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['activity'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
