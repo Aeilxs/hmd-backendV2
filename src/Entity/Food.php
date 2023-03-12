@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\FoodRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FoodRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FoodRepository::class)]
 class Food
@@ -13,6 +14,7 @@ class Food
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['food'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'foods')]
@@ -20,12 +22,15 @@ class Food
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['food'])]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Groups(['food'])]
     private ?int $caloric_intake = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['food'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
