@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\HydrationRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\HydrationRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: HydrationRepository::class)]
 class Hydration
@@ -13,12 +14,15 @@ class Hydration
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['hydration'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['hydration'])]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['hydration'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
