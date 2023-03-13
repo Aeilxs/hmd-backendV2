@@ -6,6 +6,7 @@ use App\Repository\SleepRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SleepRepository::class)]
 class Sleep
@@ -13,6 +14,7 @@ class Sleep
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['sleep'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'sleeps')]
@@ -20,12 +22,15 @@ class Sleep
     private ?User $user = null;
 
     #[ORM\Column]
+    #[Groups(['sleep'])]
     private ?int $duration = null;
 
     #[ORM\Column]
+    #[Groups(['sleep'])]
     private ?int $quality = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['sleep'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]
