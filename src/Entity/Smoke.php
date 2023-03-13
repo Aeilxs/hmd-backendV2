@@ -2,31 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\ActivityRepository;
+use App\Repository\SmokeRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ActivityRepository::class)]
-class Activity
+#[ORM\Entity(repositoryClass: SmokeRepository::class)]
+class Smoke
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'activities')]
+    #[ORM\ManyToOne(inversedBy: 'smokes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\Column(length: 20)]
-    private ?string $type = null;
-
     #[ORM\Column]
-    private ?int $duration = null;
-
-    #[ORM\Column]
-    private ?int $intensity = null;
+    private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -47,50 +41,26 @@ class Activity
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function getType(): ?string
+    public function getQuantity(): ?int
     {
-        return $this->type;
+        return $this->quantity;
     }
 
-    public function setType(string $type): self
+    public function setQuantity(int $quantity): self
     {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getDuration(): ?int
-    {
-        return $this->duration;
-    }
-
-    public function setDuration(int $duration): self
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    public function getIntensity(): ?int
-    {
-        return $this->intensity;
-    }
-
-    public function setIntensity(int $intensity): self
-    {
-        $this->intensity = $intensity;
+        $this->quantity = $quantity;
 
         return $this;
     }

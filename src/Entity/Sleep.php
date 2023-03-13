@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SleepRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +33,11 @@ class Sleep
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new DateTimeImmutable());
+    }
 
     public function getId(): ?int
     {

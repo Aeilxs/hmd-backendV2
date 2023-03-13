@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\HydrationRepository;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +30,11 @@ class Hydration
     #[ORM\ManyToOne(inversedBy: 'hydrations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new DateTimeImmutable());
+    }
 
     public function getId(): ?int
     {

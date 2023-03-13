@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -61,6 +62,19 @@ class UserController extends AbstractController
 
     #[Route('/{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(User $user): JsonResponse
+    {
+        return $this->json([
+            'data' => $user,
+            'message' => [
+                'severity' => 'info',
+                'message' => 'Les données de l\'utilisateur ont été récupérées avec succès'
+            ]
+        ], Response::HTTP_OK, [], ['groups' => ['user']]);
+    }
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('/{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function show(User $user, Request $request): JsonResponse
     {
         return $this->json([
             'data' => $user,
