@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -20,16 +21,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column]
-    #[ORM\GeneratedValue]
+    #[Groups(['user'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\NotBlank(message: 'Vous devez renseigner votre email')]
-    #[Assert\Email(message: "L'adresse email \"{{ value }}\" est invalide")]
+    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
+    #[Groups(['user'])]
+
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\Choice(choices: ['ROLE_USER', 'ROLE_ADMIN'], multiple: true, message: 'Rôle invalide')]
+    #[Groups(['user'])]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
@@ -37,6 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['user'])]
     #[Assert\NotBlank(message: 'Vous devez renseigner votre prénom')]
     private ?string $firstname = null;
 
@@ -46,19 +50,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 5)]
     #[Assert\Choice(choices: ['homme', 'femme'], message: 'Genre invalide')]
+    #[Groups(['user'])]
     #[Assert\NotBlank(message: 'Vous devez choisir un genre')]
     private ?string $gender = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user'])]
     private ?int $size = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user'])]
     private ?int $weight = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['user'])]
     private ?int $caloric_need = null;
 
     #[ORM\Column(nullable: true, type: Types::DATE_MUTABLE)]
+    #[Groups(['user'])]
     private ?\DateTimeInterface $date_of_birth = null;
 
     #[ORM\Column(nullable: true)]
@@ -68,18 +77,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Hydration::class, orphanRemoval: true)]
+    #[Groups(['user'])]
     private Collection $hydrations;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Sleep::class, orphanRemoval: true)]
+    #[Groups(['user'])]
     private Collection $sleeps;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Activity::class, orphanRemoval: true)]
+    #[Groups(['user'])]
     private Collection $activities;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Food::class, orphanRemoval: true)]
+    #[Groups(['user'])]
     private Collection $foods;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Drug::class, orphanRemoval: true)]
+    #[Groups(['user'])]
     private Collection $drugs;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Smoke::class, orphanRemoval: true)]
