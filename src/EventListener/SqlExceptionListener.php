@@ -10,8 +10,9 @@ class SqlExceptionListener
 {
   public function onKernelException(ExceptionEvent $event)
   {
-    $exception = $event->getThrowable();
+    dump('HELLO FROM SQL EXCEPTION LISTENER');
 
+    $exception = $event->getThrowable();
     if ($exception instanceof DriverException) {
       $response = new JsonResponse([
         'severity' => 'error',
