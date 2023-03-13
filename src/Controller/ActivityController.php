@@ -37,7 +37,7 @@ class ActivityController extends AbstractController
 
         $errors = $this->validator->validate($activity);
 
-        $activity->setUserId($this->getUser());
+        $activity->setUser($this->getUser());
 
         if (count($errors) > 0) {
             return $this->json([

@@ -54,7 +54,7 @@ class Sleep
         return $this->user;
     }
 
-    public function setUserId(?User $user): self
+    public function setUser($user): self
     {
         $this->user = $user;
 

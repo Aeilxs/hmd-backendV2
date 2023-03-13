@@ -19,7 +19,8 @@ services:
 
   App\EventListener\SqlExceptionListener:
     tags:
-      - { name: kernel.event_listener, event: kernel.exception }
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
   app.listener.authentication_success:
     class: App\EventListener\AuthenticationSuccessListener
     tags:

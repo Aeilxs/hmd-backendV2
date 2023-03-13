@@ -16,32 +16,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-// #[UniqueEntity('email', message: "L'email est déjà utiliser. Avez-vous oublier votre mot de passe ?")]
+#[UniqueEntity('email', message: "L'email est déjà utiliser. Avez-vous oublier votre mot de passe ?")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column]
+    #[ORM\GeneratedValue]
     #[Groups(['user'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
     #[Groups(['user'])]
-
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\Choice(choices: ['ROLE_USER', 'ROLE_ADMIN'], multiple: true, message: 'Rôle invalide')]
+    #[Assert\Choice(
+        choices: ['ROLE_USER', 'ROLE_ADMIN'],
+        multiple: true,
+        message: 'Rôle invalide'
+    )]
     #[Groups(['user'])]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    // #[Assert\Regex('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/')]
+    #[Assert\Regex(
+        '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+        message: 'Le mot de passe doit faire 8 caractères minimum, contenir une majuscule et 1 caractère spécial'
+    )]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['user'])]
     #[Assert\NotBlank(message: 'Vous devez renseigner votre prénom')]
+    #[Groups(['user'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
@@ -49,9 +56,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column(length: 5)]
-    #[Assert\Choice(choices: ['homme', 'femme'], message: 'Genre invalide')]
-    #[Groups(['user'])]
+    #[Assert\Choice(
+        choices: ['homme', 'femme'],
+        message: 'Genre invalide'
+    )]
     #[Assert\NotBlank(message: 'Vous devez choisir un genre')]
+    #[Groups(['user'])]
     private ?string $gender = null;
 
     #[ORM\Column(nullable: true)]
@@ -274,7 +284,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->hydrations->contains($hydration)) {
             $this->hydrations->add($hydration);
-            $hydration->setUserId($this);
+            $hydration->setUser($this);
         }
 
         return $this;
@@ -285,7 +295,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->hydrations->removeElement($hydration)) {
             // set the owning side to null (unless already changed)
             if ($hydration->getUserId() === $this) {
-                $hydration->setUserId(null);
+                $hydration->setUser(null);
             }
         }
 
@@ -304,7 +314,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->sleeps->contains($sleep)) {
             $this->sleeps->add($sleep);
-            $sleep->setUserId($this);
+            $sleep->setUser($this);
         }
 
         return $this;
@@ -315,7 +325,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->sleeps->removeElement($sleep)) {
             // set the owning side to null (unless already changed)
             if ($sleep->getUserId() === $this) {
-                $sleep->setUserId(null);
+                $sleep->setUser(null);
             }
         }
 
@@ -334,7 +344,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->activities->contains($activity)) {
             $this->activities->add($activity);
-            $activity->setUserId($this);
+            $activity->setUser($this);
         }
 
         return $this;
@@ -345,7 +355,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->activities->removeElement($activity)) {
             // set the owning side to null (unless already changed)
             if ($activity->getUserId() === $this) {
-                $activity->setUserId(null);
+                $activity->setUser(null);
             }
         }
 
@@ -364,7 +374,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->foods->contains($food)) {
             $this->foods->add($food);
-            $food->setUserId($this);
+            $food->setUser($this);
         }
 
         return $this;
@@ -375,7 +385,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->foods->removeElement($food)) {
             // set the owning side to null (unless already changed)
             if ($food->getUserId() === $this) {
-                $food->setUserId(null);
+                $food->setUser(null);
             }
         }
 
@@ -406,7 +416,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->drugs->contains($drug)) {
             $this->drugs->add($drug);
-            $drug->setUserId($this);
+            $drug->setUser($this);
         }
 
         return $this;
@@ -417,7 +427,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->drugs->removeElement($drug)) {
             // set the owning side to null (unless already changed)
             if ($drug->getUserId() === $this) {
-                $drug->setUserId(null);
+                $drug->setUser(null);
             }
         }
 

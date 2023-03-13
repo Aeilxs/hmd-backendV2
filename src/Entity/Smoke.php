@@ -6,6 +6,7 @@ use App\Repository\SmokeRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SmokeRepository::class)]
 class Smoke
@@ -13,6 +14,7 @@ class Smoke
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['smoke'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'smokes')]
@@ -20,9 +22,11 @@ class Smoke
     private ?User $user = null;
 
     #[ORM\Column]
+    #[Groups(['smoke'])]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['smoke'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column]

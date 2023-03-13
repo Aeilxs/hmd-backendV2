@@ -36,7 +36,7 @@ class DrugController extends AbstractController
 
         $errors = $this->validator->validate($drug);
 
-        $drug->setUserId($this->getUser());
+        $drug->setUser($this->getUser());
 
         if (count($errors) > 0) {
             return $this->json([
