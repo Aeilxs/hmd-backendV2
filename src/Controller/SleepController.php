@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[IsGranted('ROLE_USER')]
-#[Route('/api/sleeps', name: 'app_user_sleeps')]
+#[Route('/api/sleeps', name: 'app_user_sleeps_')]
 class SleepController extends AbstractController
 {
     private SerializerInterface $serializer;
@@ -48,7 +48,6 @@ class SleepController extends AbstractController
                 ]
             ], Response::HTTP_BAD_REQUEST);
         }
-
         $this->sleepRepository->save($sleep, true);
 
         return $this->json([
@@ -71,6 +70,7 @@ class SleepController extends AbstractController
                 'errors' => $errors
             ], Response::HTTP_BAD_REQUEST);
         }
+
         $this->sleepRepository->save($updatedSleep, true);
 
         return $this->json([

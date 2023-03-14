@@ -7,10 +7,13 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {
+    const TYPE_ACTIVTIES = ['footing', 'natation', 'exercices', 'velo', 'marche'];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,6 +26,10 @@ class Activity
 
     #[ORM\Column(length: 20)]
     #[Groups(['activity'])]
+    #[Assert\Choice(
+        self::TYPE_ACTIVTIES,
+        message: "Le type de l'activité n'est pas bon"
+    )]
     private ?string $type = null;
 
     #[ORM\Column]
@@ -42,11 +49,6 @@ class Activity
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
-
-    public function __construct()
-    {
-        $this->setCreatedAt(new DateTimeImmutable());
-    }
 
     public function getId(): ?int
     {

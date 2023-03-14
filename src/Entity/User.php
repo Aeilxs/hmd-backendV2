@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -40,10 +39,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    #[Assert\Regex(
-        '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
-        message: 'Le mot de passe doit faire 8 caractères minimum, contenir une majuscule et 1 caractère spécial'
-    )]
+    // #[Assert\Regex(
+    //     '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/',
+    //     message: 'Le mot de passe doit faire 8 caractères minimum, contenir une majuscule et 1 caractère spécial'
+    // )]
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
@@ -80,11 +79,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user'])]
     private ?\DateTimeInterface $date_of_birth = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updated_at = null;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updated_at = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Hydration::class, orphanRemoval: true)]
     #[Groups(['user'])]
@@ -111,7 +110,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->setCreatedAt(new DateTimeImmutable());
         $this->activities = new ArrayCollection();
         $this->drugs = new ArrayCollection();
         $this->foods = new ArrayCollection();

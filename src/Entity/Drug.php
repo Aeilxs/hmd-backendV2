@@ -43,11 +43,6 @@ class Drug
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    public function __construct()
-    {
-        $this->setCreatedAt(new DateTimeImmutable());
-    }
-
     public function getId(): ?int
     {
         return $this->id;

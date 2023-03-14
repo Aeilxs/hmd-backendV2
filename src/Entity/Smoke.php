@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\SmokeRepository;
-use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SmokeRepository::class)]
+#[HasLifecycleCallbacks]
 class Smoke
 {
     #[ORM\Id]
@@ -34,11 +35,6 @@ class Smoke
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
-
-    public function __construct()
-    {
-        $this->setCreatedAt(new DateTimeImmutable());
-    }
 
     public function getId(): ?int
     {
@@ -93,14 +89,14 @@ class Smoke
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): self
+    public function setUpdatedAt(\DateTimeImmutable $created_at): self
     {
-        $this->updated_at = $updated_at;
+        $this->updated_at = $created_at;
 
         return $this;
     }

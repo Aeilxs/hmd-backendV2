@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/users/activities', name: 'app_user_activities')]
+#[Route('/api/activities', name: 'app_user_activities_')]
 class ActivityController extends AbstractController
 {
     private SerializerInterface $serializer;

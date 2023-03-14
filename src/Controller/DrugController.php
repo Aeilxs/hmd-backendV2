@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/users/drugs', name: 'app_user_drugs')]
+#[Route('/api/drugs', name: 'app_user_drugs_')]
 class DrugController extends AbstractController
 {
     private SerializerInterface $serializer;

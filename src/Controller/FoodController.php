@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/users/foods', name: 'app_user_foods')]
+#[Route('/api/foods', name: 'app_user_foods_')]
 class FoodController extends AbstractController
 {
     private SerializerInterface $serializer;

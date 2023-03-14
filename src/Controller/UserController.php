@@ -72,6 +72,8 @@ class UserController extends AbstractController
                 'severity' => 'info',
                 'message' => 'Les données de l\'utilisateur ont été récupérées avec succès'
             ]
-        ], Response::HTTP_OK, [], ['groups' => ['user', 'sleep']]);
+        ], Response::HTTP_OK, [], [
+            'groups' => ['user', 'sleep', 'smoke', 'hydration', 'food', 'activity', 'drug']
+        ]);
     }
 }

@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[IsGranted('ROLE_USER')]
-#[Route('/api/smokes', name: 'app_user_smokes')]
+#[Route('/api/smokes', name: 'app_user_smokes_')]
 class SmokeController extends AbstractController
 {
     private SerializerInterface $serializer;
@@ -36,7 +35,6 @@ class SmokeController extends AbstractController
         $smoke = $this->serializer->deserialize($request->getContent(), Smoke::class, 'json');
 
         $errors = $this->validator->validate($smoke);
-        dump($smoke);
         $smoke->setUser($this->getUser());
 
         if (count($errors) > 0) {
