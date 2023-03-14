@@ -35,11 +35,6 @@ class Hydration
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    public function __construct()
-    {
-        $this->setCreatedAt(new DateTimeImmutable());
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -74,9 +69,9 @@ class Hydration
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(): self
     {
-        $this->created_at = $created_at;
+        $this->created_at = new DateTimeImmutable();
 
         return $this;
     }
@@ -98,7 +93,7 @@ class Hydration
         return $this->user;
     }
 
-    public function setUserId(?User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

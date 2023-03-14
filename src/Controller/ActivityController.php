@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/users/activities', name: 'app_user_activities')]
+#[Route('/api/activities', name: 'app_user_activities_')]
 class ActivityController extends AbstractController
 {
     private SerializerInterface $serializer;
@@ -37,7 +37,7 @@ class ActivityController extends AbstractController
 
         $errors = $this->validator->validate($activity);
 
-        $activity->setUserId($this->getUser());
+        $activity->setUser($this->getUser());
 
         if (count($errors) > 0) {
             return $this->json([

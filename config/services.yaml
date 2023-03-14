@@ -11,15 +11,11 @@ services:
     autowire: true # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  App\Controller\UserController:
-    arguments:
-      $userRepository: '@App\Repository\UserRepository'
-      $serializer: '@Symfony\Component\Serializer\SerializerInterface'
-      $hasher: '@Symfony\Component\PasswordHasher\PasswordHasherInterface'
-
-  App\EventListener\SqlExceptionListener:
+  app.listener.sql_exception_listener:
+    class: App\EventListener\SqlExceptionListener
     tags:
-      - { name: kernel.event_listener, event: kernel.exception }
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
   app.listener.authentication_success:
     class: App\EventListener\AuthenticationSuccessListener
     tags:
@@ -28,6 +24,10 @@ services:
           event: lexik_jwt_authentication.on_authentication_success,
           method: onAuthenticationSuccess,
         }
+
+  App\EventSubscriber\TimestampSubscriber:
+    tags:
+      - { name: doctrine.event_subscriber, method: onEvent }
 
   # makes classes in src/ available to be used as services
   # this creates a service per class whose id is the fully-qualified class name

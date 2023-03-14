@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/users/hydrations', name: 'app_user_hydrations')]
+#[Route('/api/hydrations', name: 'app_user_hydrations_')]
 class HydrationController extends AbstractController
 {
     private SerializerInterface $serializer;
@@ -31,12 +31,10 @@ class HydrationController extends AbstractController
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-
         $hydration = $this->serializer->deserialize($request->getContent(), Hydration::class, 'json');
-
+        $hydration->setUser($this->getUser());
         $errors = $this->validator->validate($hydration);
 
-        $hydration->setUserId($this->getUser());
 
         if (count($errors) > 0) {
             return $this->json([

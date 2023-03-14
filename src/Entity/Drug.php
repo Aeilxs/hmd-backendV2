@@ -43,11 +43,6 @@ class Drug
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    public function __construct()
-    {
-        $this->setCreatedAt(new DateTimeImmutable());
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -58,7 +53,7 @@ class Drug
         return $this->user;
     }
 
-    public function setUserId(?User $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

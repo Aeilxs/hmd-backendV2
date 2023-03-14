@@ -3,16 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Sleep;
+use App\Repository\SleepRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\SleepRepository;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/users/sleeps', name: 'app_user_sleeps')]
+#[IsGranted('ROLE_USER')]
+#[Route('/api/sleeps', name: 'app_user_sleeps_')]
 class SleepController extends AbstractController
 {
     private SerializerInterface $serializer;
@@ -31,12 +33,11 @@ class SleepController extends AbstractController
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-
         $sleep = $this->serializer->deserialize($request->getContent(), Sleep::class, 'json');
 
         $errors = $this->validator->validate($sleep);
 
-        $sleep->setUserId($this->getUser());
+        $sleep->setUser($this->getUser());
 
         if (count($errors) > 0) {
             return $this->json([
@@ -47,7 +48,6 @@ class SleepController extends AbstractController
                 ]
             ], Response::HTTP_BAD_REQUEST);
         }
-
         $this->sleepRepository->save($sleep, true);
 
         return $this->json([
@@ -63,7 +63,6 @@ class SleepController extends AbstractController
     public function update(Request $request, Sleep $sleep): JsonResponse
     {
         $updatedSleep = $this->serializer->deserialize($request->getContent(), Sleep::class, 'json', ['object_to_populate' => $sleep]);
-
         $errors = $this->validator->validate($updatedSleep);
 
         if (count($errors) > 0) {
