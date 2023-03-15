@@ -10,6 +10,8 @@
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
+        "fzaninotto/faker": "^1.5",
+        "jzonta/faker-restaurant": "^1.1",
         "lexik/jwt-authentication-bundle": "^2.18",
         "nelmio/cors-bundle": "^2.3",
         "symfony/console": "6.2.*",
@@ -23,6 +25,7 @@
         "symfony/yaml": "6.2.*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "symfony/maker-bundle": "^1.48"
     },
     "config": {

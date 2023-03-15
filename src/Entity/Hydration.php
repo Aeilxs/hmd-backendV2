@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\HydrationRepository;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: HydrationRepository::class)]
 class Hydration
@@ -19,6 +20,11 @@ class Hydration
 
     #[ORM\Column]
     #[Groups(['hydration'])]
+    #[Assert\Range(
+        min: 1,
+        max: 10,
+        notInRangeMessage: 'Vous ne pouvez pas boire plus de 10 litres par jour.',
+    )]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -71,7 +77,7 @@ class Hydration
 
     public function setCreatedAt(): self
     {
-        $this->created_at = new DateTimeImmutable();
+        $this->created_at = new \DateTimeImmutable();
 
         return $this;
     }

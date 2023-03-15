@@ -60,11 +60,24 @@ class UserController extends AbstractController
         ], Response::HTTP_CREATED, [], ['groups' => ['user']]);
     }
 
-
-
     #[IsGranted('ROLE_USER')]
     #[Route('', name: 'show', methods: ['GET'])]
     public function show(): JsonResponse
+    {
+        return $this->json([
+            'data' => $this->getUser(),
+            'message' => [
+                'severity' => 'info',
+                'message' => 'Les données de l\'utilisateur ont été récupérées avec succès'
+            ]
+        ], Response::HTTP_OK, [], [
+            'groups' => ['user', 'sleep', 'smoke', 'hydration', 'food', 'activity', 'drug']
+        ]);
+    }
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('', name: 'show', methods: ['GET'])]
+    public function fetchUser(): JsonResponse
     {
         return $this->json([
             'data' => $this->getUser(),

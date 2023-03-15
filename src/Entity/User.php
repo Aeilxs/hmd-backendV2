@@ -25,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\Email(message: 'The email {{ value }} is not a valid email.')]
+    #[Assert\Email(message: "L'adresse email {{ value }} est invalide.")]
     #[Groups(['user'])]
     private ?string $email = null;
 
@@ -46,12 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: 'Vous devez renseigner votre prénom')]
+    #[Assert\NotBlank(message: 'Vous devez renseigner votre prénom.')]
     #[Groups(['user'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    #[Assert\NotBlank(message: 'Vous devez renseigner votre nom')]
+    #[Assert\NotBlank(message: 'Vous devez renseigner votre nom.')]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 5)]
@@ -59,15 +59,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         choices: ['homme', 'femme'],
         message: 'Genre invalide'
     )]
-    #[Assert\NotBlank(message: 'Vous devez choisir un genre')]
+    #[Assert\NotBlank(message: 'Vous devez choisir un genre.')]
     #[Groups(['user'])]
     private ?string $gender = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Range(
+        min: 0,
+        max: 255,
+        notInRangeMessage: 'Votre taille doit probablement se situer entre {{ min }}cm et {{ max }}cm, non ?',
+    )]
     #[Groups(['user'])]
     private ?int $size = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\Range(
+        min: 0,
+        max: 255,
+        notInRangeMessage: 'Votre poids doit probablement se situer entre {{ min }}kg et {{ max }}kg, non ?',
+    )]
     #[Groups(['user'])]
     private ?int $weight = null;
 

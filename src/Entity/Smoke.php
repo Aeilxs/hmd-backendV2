@@ -5,11 +5,10 @@ namespace App\Entity;
 use App\Repository\SmokeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SmokeRepository::class)]
-#[HasLifecycleCallbacks]
 class Smoke
 {
     #[ORM\Id]
@@ -24,6 +23,11 @@ class Smoke
 
     #[ORM\Column]
     #[Groups(['smoke'])]
+    #[Assert\Range(
+        min: 0,
+        max: 100,
+        notInRangeMessage: 'Vous ne pouvez pas fumer plus de 100 cigarettes par jour.',
+    )]
     private ?int $quantity = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

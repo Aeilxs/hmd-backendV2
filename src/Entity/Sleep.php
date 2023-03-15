@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\SleepRepository;
-use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SleepRepository::class)]
 class Sleep
@@ -22,11 +22,21 @@ class Sleep
     private ?User $user = null;
 
     #[ORM\Column]
+    #[Assert\Range(
+        min: 0,
+        max: 24,
+        notInRangeMessage: 'Vous ne pouvez pas dormir plus de 24 heures par jour.',
+    )]
     #[Groups(['sleep'])]
     private ?int $duration = null;
 
     #[ORM\Column]
     #[Groups(['sleep'])]
+    #[Assert\Range(
+        min: 1,
+        max: 3,
+        notInRangeMessage: 'La qualité du sommeil est invalide.',
+    )]
     private ?int $quality = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
