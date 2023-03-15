@@ -23,14 +23,14 @@ class UserController extends AbstractController
     private ValidatorInterface $validator;
 
     public function __construct(
-        UserRepository $userRepository,
-        SerializerInterface $serializer,
         UserPasswordHasherInterface $passwordHasher,
+        SerializerInterface $serializer,
+        UserRepository $userRepository,
         ValidatorInterface $validator
     ) {
-        $this->userRepository = $userRepository;
-        $this->serializer = $serializer;
         $this->passwordHasher = $passwordHasher;
+        $this->serializer = $serializer;
+        $this->userRepository = $userRepository;
         $this->validator = $validator;
     }
 
@@ -51,6 +51,7 @@ class UserController extends AbstractController
                 'errors' => $errors
             ], Response::HTTP_BAD_REQUEST);
         }
+
         $this->userRepository->save($user, true);
         return $this->json([
             'message' => [
@@ -60,24 +61,8 @@ class UserController extends AbstractController
         ], Response::HTTP_CREATED, [], ['groups' => ['user']]);
     }
 
-    #[IsGranted('ROLE_USER')]
     #[Route('', name: 'show', methods: ['GET'])]
     public function show(): JsonResponse
-    {
-        return $this->json([
-            'data' => $this->getUser(),
-            'message' => [
-                'severity' => 'info',
-                'message' => 'Les données de l\'utilisateur ont été récupérées avec succès'
-            ]
-        ], Response::HTTP_OK, [], [
-            'groups' => ['user', 'sleep', 'smoke', 'hydration', 'food', 'activity', 'drug']
-        ]);
-    }
-
-    #[IsGranted('ROLE_USER')]
-    #[Route('', name: 'show', methods: ['GET'])]
-    public function fetchUser(): JsonResponse
     {
         return $this->json([
             'data' => $this->getUser(),
