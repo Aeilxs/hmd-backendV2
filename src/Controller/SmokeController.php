@@ -51,6 +51,7 @@ class SmokeController extends AbstractController
 
         return $this->json([
             'smoke' => $smoke,
+            'smokes' => $smoke->getUser()->getSmokes(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été enregistrée avec succès'
@@ -73,6 +74,7 @@ class SmokeController extends AbstractController
 
         return $this->json([
             'smoke' => $updatedSmoke,
+            'smokes' => $updatedSmoke->getUser()->getSmokes(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été mise à jour avec succès'
@@ -83,11 +85,9 @@ class SmokeController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Smoke $smoke): JsonResponse
     {
-        $smokeId = $smoke->getId();
         $this->smokeRepository->remove($smoke, true);
-
         return $this->json([
-            'id' => $smokeId,
+            'smokes' => $smoke->getUser()->getSmokes(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre temps consommation a été supprimée avec succès'

@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {
-    const TYPE_ACTIVTIES = ['footing', 'natation', 'exercices', 'velo', 'marche'];
+    const TYPE_ACTIVTIES = ['footing', 'natation', 'autre', 'velo', 'marche'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -54,7 +54,7 @@ class Activity
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }

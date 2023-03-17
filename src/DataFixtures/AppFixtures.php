@@ -70,7 +70,7 @@ class AppFixtures extends Fixture
                 ->setName($faker->foodName());
 
             $hydration
-                ->setQuantity(mt_rand(1, 10));
+                ->setQuantity(mt_rand(1, 3));
 
             $sleep
                 ->setDuration(mt_rand(5, 12))

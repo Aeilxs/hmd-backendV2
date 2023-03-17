@@ -50,6 +50,7 @@ class HydrationController extends AbstractController
 
         return $this->json([
             'hydration' => $hydration,
+            'hydrations' => $hydration->getUserId()->getHydrations(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation d\'eau a été enregistré avec succès'
@@ -74,6 +75,7 @@ class HydrationController extends AbstractController
 
         return $this->json([
             'hydration' => $updatedHydration,
+            'hydrations' => $updatedHydration->getUserId()->getHydrations(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation d\'eau a été mis à jour avec succès'
@@ -84,11 +86,11 @@ class HydrationController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Hydration $hydration): JsonResponse
     {
-        $hydrationId = $hydration->getId();
         $this->hydrationRepository->remove($hydration, true);
 
         return $this->json([
-            'id' => $hydrationId,
+            'hydration' => $hydration,
+            'hydrations' => $hydration->getUserId()->getHydrations(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation d\'eau a été supprimé avec succès'

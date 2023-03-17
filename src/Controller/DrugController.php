@@ -52,6 +52,7 @@ class DrugController extends AbstractController
 
         return $this->json([
             'drug' => $drug,
+            'drugs' => $drug->getUser()->getDrugs(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre traitement médical a été enregistré avec succès'
@@ -76,6 +77,7 @@ class DrugController extends AbstractController
 
         return $this->json([
             'drug' => $updatedDrug,
+            'drugs' => $updatedDrug->getUser()->getDrugs(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre traitement médical a été mis à jour avec succès'
@@ -86,11 +88,11 @@ class DrugController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Drug $drug): JsonResponse
     {
-        $drugId = $drug->getId();
         $this->drugRepository->remove($drug, true);
 
         return $this->json([
-            'id' => $drugId,
+            'drug' => $drug,
+            'drugs' => $drug->getUser()->getDrugs(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre traitement médical a été supprimé avec succès'

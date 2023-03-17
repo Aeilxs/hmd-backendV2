@@ -53,6 +53,7 @@ class ActivityController extends AbstractController
 
         return $this->json([
             'activity' => $activity,
+            'activities' => $activity->getUser()->getActivities(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre activité a été enregistré avec succès'
@@ -77,6 +78,7 @@ class ActivityController extends AbstractController
 
         return $this->json([
             'activity' => $updatedactivity,
+            'activities' => $updatedactivity->getUser()->getActivities(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre activité a été mis à jour avec succès'
@@ -91,7 +93,7 @@ class ActivityController extends AbstractController
         $this->activityRepository->remove($activity, true);
 
         return $this->json([
-            'id' => $activityId,
+            'activities' => $activity->getUser()->getActivities(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre activité a été supprimé avec succès'

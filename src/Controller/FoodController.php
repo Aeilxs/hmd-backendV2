@@ -49,6 +49,7 @@ class FoodController extends AbstractController
 
         return $this->json([
             'food' => $food,
+            'foods' => $food->getUser()->getFoods(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été enregistré avec succès'
@@ -73,6 +74,7 @@ class FoodController extends AbstractController
 
         return $this->json([
             'food' => $updatedFood,
+            'foods' => $updatedFood->getUser()->getFoods(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été mis à jour avec succès'
@@ -83,11 +85,11 @@ class FoodController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Food $food): JsonResponse
     {
-        $foodId = $food->getId();
         $this->foodRepository->remove($food, true);
 
         return $this->json([
-            'id' => $foodId,
+            'food' => $food,
+            'foods' => $food->getUser()->getFoods(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été supprimé avec succès'

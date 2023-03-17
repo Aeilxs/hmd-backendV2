@@ -11,8 +11,8 @@ services:
     autowire: true # Automatically injects dependencies in your services.
     autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
-  app.listener.sql_exception_listener:
-    class: App\EventListener\SqlExceptionListener
+  app.listener.exception_listener:
+    class: App\EventListener\ExceptionListener
     tags:
       - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 

@@ -116,6 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $drugs;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Smoke::class, orphanRemoval: true)]
+    #[Groups(['user'])]
     private Collection $smokes;
 
     public function __construct()

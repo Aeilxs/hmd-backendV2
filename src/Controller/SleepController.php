@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Sleep;
+use App\Entity\User;
 use App\Repository\SleepRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,10 +35,9 @@ class SleepController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $sleep = $this->serializer->deserialize($request->getContent(), Sleep::class, 'json');
-
         $errors = $this->validator->validate($sleep);
-
         $sleep->setUser($this->getUser());
+
 
         if (count($errors) > 0) {
             return $this->json([
@@ -49,9 +49,9 @@ class SleepController extends AbstractController
             ], Response::HTTP_BAD_REQUEST);
         }
         $this->sleepRepository->save($sleep, true);
-
         return $this->json([
             'sleep' => $sleep,
+            'sleeps' => $sleep->getUserId()->getSleeps(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre temps de sommeil a été enregistré avec succès'
@@ -67,7 +67,11 @@ class SleepController extends AbstractController
 
         if (count($errors) > 0) {
             return $this->json([
-                'errors' => $errors
+                'errors' => $errors,
+                'message' => [
+                    'severity' => 'error',
+                    'message' => 'Votre temps de sommeil n\'a pas pu être mis à jour :('
+                ]
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -75,6 +79,7 @@ class SleepController extends AbstractController
 
         return $this->json([
             'sleep' => $updatedSleep,
+            'sleeps' => $updatedSleep->getUserId()->getSleeps(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre temps de sommeil a été mis à jour avec succès'
@@ -85,11 +90,10 @@ class SleepController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Sleep $sleep): JsonResponse
     {
-        $sleepId = $sleep->getId();
         $this->sleepRepository->remove($sleep, true);
-
         return $this->json([
-            'id' => $sleepId,
+            'sleep' => $sleep,
+            'sleeps' => $sleep->getUserId()->getSleeps(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre temps de sommeil a été supprimé avec succès'

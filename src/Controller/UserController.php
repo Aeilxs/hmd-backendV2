@@ -65,7 +65,7 @@ class UserController extends AbstractController
     public function show(): JsonResponse
     {
         return $this->json([
-            'data' => $this->getUser(),
+            'user' => $this->getUser(),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Les données de l\'utilisateur ont été récupérées avec succès'
