@@ -50,7 +50,7 @@ class HydrationController extends AbstractController
 
         return $this->json([
             'hydration' => $hydration,
-            'hydrations' => $hydration->getUserId()->getHydrations(),
+            'hydrations' => $hydration->getUser()->getSortedCollection('hydrations'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation d\'eau a été enregistré avec succès'
@@ -75,7 +75,7 @@ class HydrationController extends AbstractController
 
         return $this->json([
             'hydration' => $updatedHydration,
-            'hydrations' => $updatedHydration->getUserId()->getHydrations(),
+            'hydrations' => $updatedHydration->getUser()->getSortedCollection('hydrations'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation d\'eau a été mis à jour avec succès'
@@ -90,7 +90,7 @@ class HydrationController extends AbstractController
 
         return $this->json([
             'hydration' => $hydration,
-            'hydrations' => $hydration->getUserId()->getHydrations(),
+            'hydrations' => $hydration->getUser()->getSortedCollection('hydrations'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation d\'eau a été supprimé avec succès'

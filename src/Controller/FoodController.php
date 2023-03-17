@@ -49,7 +49,7 @@ class FoodController extends AbstractController
 
         return $this->json([
             'food' => $food,
-            'foods' => $food->getUser()->getFoods(),
+            'foods' => $food->getUser()->getSortedCollection('foods'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été enregistré avec succès'
@@ -74,7 +74,7 @@ class FoodController extends AbstractController
 
         return $this->json([
             'food' => $updatedFood,
-            'foods' => $updatedFood->getUser()->getFoods(),
+            'foods' => $updatedFood->getUser()->getSortedCollection('foods'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été mis à jour avec succès'
@@ -89,7 +89,7 @@ class FoodController extends AbstractController
 
         return $this->json([
             'food' => $food,
-            'foods' => $food->getUser()->getFoods(),
+            'foods' => $food->getUser()->getSortedCollection('foods'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été supprimé avec succès'

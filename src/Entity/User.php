@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -128,6 +129,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->sleeps = new ArrayCollection();
         $this->smokes = new ArrayCollection();
     }
+
+    public function getSortedCollection(string $choice)
+    {
+        if (!property_exists($this, $choice)) {
+            throw new \InvalidArgumentException('Invalid choice');
+        }
+
+        $collection = $this->{$choice};
+        $criteria = Criteria::create()
+            ->orderBy(['date' => 'ASC']);
+
+        return $collection->matching($criteria);
+    }
+
 
     public function getId(): ?int
     {
@@ -303,7 +318,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->hydrations->removeElement($hydration)) {
             // set the owning side to null (unless already changed)
-            if ($hydration->getUserId() === $this) {
+            if ($hydration->getUser() === $this) {
                 $hydration->setUser(null);
             }
         }
@@ -333,7 +348,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->sleeps->removeElement($sleep)) {
             // set the owning side to null (unless already changed)
-            if ($sleep->getUserId() === $this) {
+            if ($sleep->getUser() === $this) {
                 $sleep->setUser(null);
             }
         }
@@ -363,7 +378,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->activities->removeElement($activity)) {
             // set the owning side to null (unless already changed)
-            if ($activity->getUserId() === $this) {
+            if ($activity->getUser() === $this) {
                 $activity->setUser(null);
             }
         }
@@ -393,7 +408,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->foods->removeElement($food)) {
             // set the owning side to null (unless already changed)
-            if ($food->getUserId() === $this) {
+            if ($food->getUser() === $this) {
                 $food->setUser(null);
             }
         }
@@ -435,7 +450,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->drugs->removeElement($drug)) {
             // set the owning side to null (unless already changed)
-            if ($drug->getUserId() === $this) {
+            if ($drug->getUser() === $this) {
                 $drug->setUser(null);
             }
         }

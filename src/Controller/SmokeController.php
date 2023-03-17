@@ -7,7 +7,6 @@ use App\Repository\SmokeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -51,7 +50,7 @@ class SmokeController extends AbstractController
 
         return $this->json([
             'smoke' => $smoke,
-            'smokes' => $smoke->getUser()->getSmokes(),
+            'smokes' => $smoke->getUser()->getSortedCollection('smokes'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre consommation a été enregistrée avec succès'

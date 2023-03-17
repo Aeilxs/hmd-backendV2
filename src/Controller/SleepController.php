@@ -51,7 +51,7 @@ class SleepController extends AbstractController
         $this->sleepRepository->save($sleep, true);
         return $this->json([
             'sleep' => $sleep,
-            'sleeps' => $sleep->getUserId()->getSleeps(),
+            'sleeps' => $sleep->getUser()->getSortedCollection('sleeps'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre temps de sommeil a été enregistré avec succès'
@@ -79,7 +79,7 @@ class SleepController extends AbstractController
 
         return $this->json([
             'sleep' => $updatedSleep,
-            'sleeps' => $updatedSleep->getUserId()->getSleeps(),
+            'sleeps' => $updatedSleep->getUser()->getSortedCollection('sleeps'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre temps de sommeil a été mis à jour avec succès'
@@ -93,7 +93,7 @@ class SleepController extends AbstractController
         $this->sleepRepository->remove($sleep, true);
         return $this->json([
             'sleep' => $sleep,
-            'sleeps' => $sleep->getUserId()->getSleeps(),
+            'sleeps' => $sleep->getUser()->getSortedCollection('sleeps'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre temps de sommeil a été supprimé avec succès'

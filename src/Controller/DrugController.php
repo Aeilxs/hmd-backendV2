@@ -52,7 +52,7 @@ class DrugController extends AbstractController
 
         return $this->json([
             'drug' => $drug,
-            'drugs' => $drug->getUser()->getDrugs(),
+            'drugs' => $drug->getUser()->getSortedCollection('drugs'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre traitement médical a été enregistré avec succès'
@@ -77,7 +77,7 @@ class DrugController extends AbstractController
 
         return $this->json([
             'drug' => $updatedDrug,
-            'drugs' => $updatedDrug->getUser()->getDrugs(),
+            'drugs' => $updatedDrug->getUser()->getSortedCollection('drugs'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre traitement médical a été mis à jour avec succès'
@@ -92,7 +92,7 @@ class DrugController extends AbstractController
 
         return $this->json([
             'drug' => $drug,
-            'drugs' => $drug->getUser()->getDrugs(),
+            'drugs' => $drug->getUser()->getSortedCollection('drugs'),
             'message' => [
                 'severity' => 'info',
                 'message' => 'Votre traitement médical a été supprimé avec succès'
