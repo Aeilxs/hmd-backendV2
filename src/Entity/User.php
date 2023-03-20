@@ -133,7 +133,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getSortedCollection(string $choice)
     {
         if (!property_exists($this, $choice)) {
-            throw new \InvalidArgumentException('Invalid choice');
+            throw new \InvalidArgumentException();
         }
 
         $collection = $this->{$choice};
@@ -142,7 +142,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $collection->matching($criteria);
     }
-
 
     public function getId(): ?int
     {

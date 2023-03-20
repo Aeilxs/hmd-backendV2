@@ -38,7 +38,6 @@ class SleepController extends AbstractController
         $errors = $this->validator->validate($sleep);
         $sleep->setUser($this->getUser());
 
-
         if (count($errors) > 0) {
             return $this->json([
                 'errors' => $errors,

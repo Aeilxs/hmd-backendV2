@@ -43,7 +43,20 @@ class AppFixtures extends Fixture
             ->setWeight(57)
             ->setDateOfBirth(new DateTime('02-09-1994'));
 
+        $admin = new User();
+        $admin
+            ->setEmail('admin@gmail.com')
+            ->setPassword($this->hasher->hashPassword($admin, 'admin'))
+            ->setRoles(['ROLE_ADMIN', 'ROLE_USER'])
+            ->setFirstname('jane')
+            ->setLastname('doe')
+            ->setGender('FEMME')
+            ->setSize(158)
+            ->setWeight(57)
+            ->setDateOfBirth(new DateTime('02-09-1994'));
+
         $manager->persist($user);
+        $manager->persist($admin);
 
         for ($i = 0; $i < 30; $i++) {
             $fixtures = [
@@ -77,8 +90,6 @@ class AppFixtures extends Fixture
                 ->setQuality(mt_rand(1, 3));
 
             $smoke->setQuantity(mt_rand(5, 20));
-
-
 
             foreach ($fixtures as $fixture) {
                 $fixture

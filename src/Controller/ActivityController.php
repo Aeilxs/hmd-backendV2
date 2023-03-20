@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Activity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,14 +28,12 @@ class ActivityController extends AbstractController
         $this->serializer = $serializer;
         $this->validator = $validator;
     }
+
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request): JsonResponse
     {
-
         $activity = $this->serializer->deserialize($request->getContent(), Activity::class, 'json');
-
         $errors = $this->validator->validate($activity);
-
         $activity->setUser($this->getUser());
 
         if (count($errors) > 0) {
@@ -65,7 +62,6 @@ class ActivityController extends AbstractController
     public function update(Request $request, activity $activity): JsonResponse
     {
         $updatedactivity = $this->serializer->deserialize($request->getContent(), Activity::class, 'json', ['object_to_populate' => $activity]);
-
         $errors = $this->validator->validate($updatedactivity);
 
         if (count($errors) > 0) {
@@ -89,7 +85,6 @@ class ActivityController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(Activity $activity): JsonResponse
     {
-        $activityId = $activity->getId();
         $this->activityRepository->remove($activity, true);
 
         return $this->json([

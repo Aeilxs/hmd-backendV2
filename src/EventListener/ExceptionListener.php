@@ -40,6 +40,13 @@ class ExceptionListener
         );
         break;
 
+      case 'AccessDeniedException':
+        $response = $this->createResponse(
+          "Accès refusé.",
+          JsonResponse::HTTP_FORBIDDEN
+        );
+        break;
+
       default:
         return;
     }
