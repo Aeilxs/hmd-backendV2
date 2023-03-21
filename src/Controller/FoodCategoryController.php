@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FoodCategory;
 use App\Repository\FoodCategoryRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +37,11 @@ class FoodCategoryController extends AbstractController
         $categories = $this->foodCategoryRepository->findAll();
 
         return $this->json([
-            'data' => $categories
+            'message' => [
+                'severity' => 'success',
+                'message' => 'Catégorie récupérées avec succès'
+            ],
+            'categories' => $categories
         ]);
     }
 
@@ -60,5 +65,33 @@ class FoodCategoryController extends AbstractController
                 'message' => 'Catégorie créée avec succès'
             ]
         ], Response::HTTP_CREATED);
+    }
+
+    #[IsGranted('ROLE_ADMIN')]
+    #[Route('', name: 'deleteAll', methods: ['DELETE'])]
+    public function deleteAll(): JsonResponse
+    {
+        $categories = $this->foodCategoryRepository->findAll();
+        if (count($categories) === 0) {
+            return $this->json([
+                'message' => [
+                    'severity' => 'warning',
+                    'message' => 'Il n\'y a pas de catégories en base de donnée.'
+                ]
+            ], Response::HTTP_NO_CONTENT);
+        }
+
+        foreach ($categories as $category) {
+            $this->foodCategoryRepository->remove($category, true);
+        }
+
+        $n = count($categories);
+
+        return $this->json([
+            'message' => [
+                'severity' => 'info',
+                'message' => "Les $n catégories ont été supprimées."
+            ]
+        ], Response::HTTP_OK);
     }
 }
