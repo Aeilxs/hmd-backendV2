@@ -61,6 +61,32 @@ class UserController extends AbstractController
         ], Response::HTTP_CREATED, [], ['groups' => ['user']]);
     }
 
+    #[Route('/{id}', name: 'update', methods: ['PATCH'])]
+    public function updateUser(Request $request, User $user): JsonResponse
+    {
+        $requestData = $request->getContent();
+        $this->serializer->deserialize($requestData, User::class, 'json', ['object_to_populate' => $user]);
+
+        $errors = $this->validator->validate($user);
+
+        if (count($errors) > 0) {
+            return $this->json([
+                'errors' => $errors
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->userRepository->save($user, true);
+
+        return $this->json([
+            'user' => $this->getUser(),
+            'message' => [
+                'severity' => 'info',
+                'message' => 'Votre compte a été mis à jour avec succès'
+            ]
+        ], Response::HTTP_OK, [], ['groups' => ['user']]);
+    }
+
+
     #[Route('', name: 'show', methods: ['GET'])]
     public function show(): JsonResponse
     {
@@ -98,6 +124,9 @@ class UserController extends AbstractController
                 'lastname' => $user->getLastname(),
                 'gender' => $user->getGender(),
                 'roles' => $user->getRoles(),
+                'size' => $user->getSize(),
+                'weight' => $user->getWeight(),
+                'dateOfBirth' => $user->getDateOfBirth(),
                 'activities' => $user->getSortedCollection('activities'),
                 'drugs' => $user->getSortedCollection('drugs'),
                 'foods' => $user->getSortedCollection('foods'),

@@ -79,7 +79,9 @@ class AppFixtures extends Fixture
                 ->setQuantity(mt_rand(1, 5));
 
             $food
-                ->setCaloricIntake(mt_rand(1800, 3000))
+                ->setQuantity(mt_rand(20, 400))
+                ->setKcal100g(mt_rand(100, 500))
+                ->setCaloricIntake($food->getKcal100g() / 100 * $food->getQuantity())
                 ->setName($faker->foodName());
 
             $hydration

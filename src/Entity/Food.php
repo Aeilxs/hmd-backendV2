@@ -28,6 +28,14 @@ class Food
     #[Groups(['food'])]
     private ?int $caloric_intake = null;
 
+    #[ORM\Column]
+    #[Groups(['food'])]
+    private ?int $kcal_100g = null;
+
+    #[ORM\Column]
+    #[Groups(['food'])]
+    private ?int $quantity = null;
+
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups(['food'])]
     private ?\DateTimeInterface $date = null;
@@ -37,6 +45,7 @@ class Food
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
+
 
     public function getId(): ?int
     {
@@ -111,6 +120,30 @@ class Food
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getKcal100g(): ?int
+    {
+        return $this->kcal_100g;
+    }
+
+    public function setKcal100g(int $kcal_100g): self
+    {
+        $this->kcal_100g = $kcal_100g;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): self
+    {
+        $this->quantity = $quantity;
 
         return $this;
     }
